@@ -1,5 +1,5 @@
 import java.util.Locale;
-
+//repræsentere et rum i spillet, så der kan dannes flere
 public class Room {
 
     //div. instansvariabler
@@ -63,7 +63,7 @@ public class Room {
     //Metode til at finde ud af om døren er låst
     public boolean isDoorLocked(String direction) {
         switch (direction.toLowerCase()) {
-            case "north": //returnere om låsen på nord er true(låst) eller false (låst op)
+            case "north": //returns if the lock at e.g. north is true(locked) or false (unlocked)
                 return lockNorth;
             case "east":
                 return lockEast;
@@ -72,7 +72,7 @@ public class Room {
             case "west":
                 return lockWest;
             default:
-                return false; //ugyldig retning
+                return false; //unknown direction
         }
     }
 
@@ -126,4 +126,6 @@ public class Room {
     public void setWest(Room west) {
         this.west = west;
     }
+
+
 }

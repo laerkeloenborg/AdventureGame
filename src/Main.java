@@ -2,8 +2,10 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        UserInterface userInterface = new UserInterface(); //laver en ny userinterface
-        userInterface.displayMenu(); //køre vores userinterface og kalder samtidig på vores displaymenu vi har inde i userinterface
+        Map gameMap = new Map();
+        AdventureGame adventureGame1 = new AdventureGame(gameMap);
+        UserInterface userInterface = new UserInterface(adventureGame1); //makes a new userinterface with our adventuregame
+        userInterface.startGame(); //starts the game
         }
     }
 
