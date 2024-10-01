@@ -1,4 +1,7 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Locale;
+
 //repræsentere et rum i spillet, så der kan dannes flere
 public class Room {
 
@@ -9,6 +12,7 @@ public class Room {
     private Room north, east, south, west;
     private boolean lockNorth, lockEast, lockSouth, lockWest; //lås for nord osv.
     private boolean visited;
+    private ArrayList<Item> itemsRooms = new ArrayList<Item>();    //makes an ArrayList, shows which items there is in the rooms
 
     //constructor
     public Room(String name, String description, String shortDescription) {
@@ -87,7 +91,7 @@ public class Room {
             visited = true; //rummet er nu besøgt
             return description; //udskriver lang beskrivelse
         } else {
-            return shortDescription; //Udskriver kort beskrivelse når rummet besøges igen
+            return shortDescription; //output: short description og the room (a room you have visited before) Udskriver kort beskrivelse når rummet besøges igen
         }
     }
 
@@ -127,5 +131,37 @@ public class Room {
         this.west = west;
     }
 
+    //method to add item to a room
+    public void addItemRoom(Item item) {
+        itemsRooms.add(item);
+    }
 
+    //method to remove an item in a room
+    public Item removeItem(Item item) {
+        itemsRooms.remove(item);
+        return item;
+    }
+
+    //method to search after an item in a room
+    public Item searchItem(String itemDescription) {
+        for (Item item : itemsRooms) { //looks through the arrayList itemsRoom for the item
+            if (item.getShortName().equalsIgnoreCase(itemDescription)) { //if the item is at the arrayList
+                return item; //returns item
+            }
+        }
+        return null;
+    }
+
+    //method to list the items in the room
+    public void listArrayRooms() {
+        if (itemsRooms.isEmpty()) {
+            System.out.println("There's no items in this room.");
+        } else {
+            System.out.println("Items in this room: ");
+            for (Item i : itemsRooms) {
+                System.out.println("- " + i.getLongName());
+            }
+        }
+
+    }
 }

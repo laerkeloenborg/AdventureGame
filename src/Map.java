@@ -1,12 +1,13 @@
 //vores creator, som opretter og forbinder rummene
 public class Map {
-private Room startingRoom;
+    private Room startingRoom;
 
-public Map(){
-    createMap();
-}
+    public Map() {
+        createMap();
+    }
 
-    //metode til at forbinde rummene
+
+    //method to connect the rooms
     public void createMap() {
         Room room1 = new Room("Room 1: The Overgrown Entrance", "This room is the entrance to the abandoned temple. Walls of ancient stone are almost completely covered by vines and moss. \n" +
                 "The air is humid, and a sense of something hidden lingers in the atmosphere.\n" +
@@ -18,7 +19,7 @@ public Map(){
         Room room4 = new Room("Room 4: The King's Fallen Throne", "This room was once the magnificent throne room where the temple's ruler sat.\n " +
                 "Now the floor lies in ruins, and the throne is nearly toppled by the ravages of time.\n" + "The walls are covered in growth, and vines twist across the ceiling. \n" + "Now you can choose if you want to go to the north or south. \n", "You're now in: The King's Fallen Throne.");
         Room room5 = new Room("Room 5: The Sacred Tomb - The Final", "This room is the heart of the abandoned temple.\n" +
-                "The room is filled with ancient frescoes that tell the story of the temple.\n" + "This is where the temple's secrets are hidden, and the player faces their greatest challenge here.\n" + "Only one way to get out of here, go south.","");
+                "The room is filled with ancient frescoes that tell the story of the temple.\n" + "This is where the temple's secrets are hidden, and the player faces their greatest challenge here.\n" + "Only one way to get out of here, go south.", "");
         Room room6 = new Room("Room 6: The Burial Chamber", "Room 6 is an ancient underground tomb filled with broken stones and hidden treasures. \n" +
                 "Some graves have been looted, while others remain untouched, but danger lurks.\n" + "You can either head to the north or to the south from here.", "");
         Room room7 = new Room("Room 7: The Hall Of The Guards", "Here lived the temple's ancient guards, but now the room is filled with rusty weapons and armor. \n" +
@@ -29,6 +30,7 @@ public Map(){
                 "Here, the corridors are narrow, and the darkness is thick. \n" + "Many explorers have been lost here. Dangerous traps are hidden in every corner.\n" + "To get out of this darkness, you can choose between going west or north.", "");
 
         //combines the rooms
+
         room1.setEast(room2); //sætter rummet øst for room 1 til room 2, dvs. når man går mod øst inde i rum 1 kommer man gennem døren ind til rum 2
         room1.setSouth(room4);
 
@@ -56,17 +58,31 @@ public Map(){
         room9.setWest(room8);
         room9.setNorth(room6);
 
-        room1.lockDoor("east"); //låser døren øst for room 1 (indgang til room 2)
+        room1.lockDoor("east"); //lock the door east for room 1 (entrance to room 2)
         room6.lockDoor("south"); //låser døren syd for room 6 (indgang til room 9)
         room8.lockDoor("north"); //låser døren nord for room 8 (indgang til room 5)
 
+
+        //room items
+        room1.addItemRoom(new Item("The holy shield", "shield"));
+        room2.addItemRoom(new Item("Holy scriptures", "scriptures"));
+        room3.addItemRoom(new Item("Enchanting compas", "compas"));
+        room4.addItemRoom(new Item("The old key", "key")); //adds item to room4 ArrayList
+        room5.addItemRoom(new Item("A mysterious amulet", "amulet"));
+        room6.addItemRoom(new Item("The shining gem", "gem"));
+        room7.addItemRoom(new Item("A dusty map", "map"));
+        room8.addItemRoom(new Item("An old coin", "coin"));
+        room9.addItemRoom(new Item("The glowing torch", "torch"));
+
+
         //defines the starting room to room 1
         startingRoom = room1;
+
     }
 
-    //get metode til at få fat på start rummet
-    public Room getStartingRoom(){
-    return startingRoom;
+    //get method to get the room you're starting at
+    public Room getStartingRoom() {
+        return startingRoom;
     }
 
 }
