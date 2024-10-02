@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+
 //Controller
 public class AdventureGame {
-    private String lastAttemptedDirection;
     private Player player;
+    // private String lastAttemptedDirection;
 
     //Gamemap generates
     public AdventureGame(Map gameMap) {
@@ -11,10 +12,12 @@ public class AdventureGame {
 
     //method to get a name and description for the room the player is in
     public void lookAround() {
-        Room currentRoom = player.getCurrentRoom(); //this line is in many methods else the output will fail and say that the currentRoom is null
-        System.out.println("You're now in: " + player.getCurrentRoom().getName());//output: the current rooms name
-        System.out.println(player.getCurrentRoom().getDescription());//output: the rooms description (whether it should be short or long) udskriver den opdaterede beskrivelse (om den skal være kort eller lang)
-        player.getCurrentRoom().listArrayRooms(); //output: rooms items
+        player.lookAround();
+    }
+
+    //method to move the player in a direction - MOVE TO PLAYER
+    public void movePlayer(String direction) {
+        player.movePlayer(direction);
     }
 
     //metod to get the description of the current room
@@ -28,67 +31,36 @@ public class AdventureGame {
     }
 
     //drop item method
-    public String dropItem(String itemDescription){
+    public String dropItem(String itemDescription) {
         return player.dropItem(itemDescription);
     }
 
     //show inventory method
-    public String showInventory(){
+    public String showInventory() {
         return player.showInventory();
-    }
-
-    //method to move the player in a direction
-    public void movePlayer(String direction) {
-        Room currentRoom = player.getCurrentRoom();
-        Room nextRoom = null; //lokalvariabel
-
-        //checks if the door is locked
-        if (currentRoom.isDoorLocked(direction)) { //if the door is locked in the direction the user write the output will be as shown in line 31
-            lastAttemptedDirection = direction; //sets the lastAttemptedDirection to direction
-            System.out.println("The door is locked"); //this will come as output if the door is locked
-            return; //end the method if the door is locked
-        }
-
-        switch (direction.toLowerCase()) { //if user writes e.g. north the next room will be north for the current room
-            case "north":
-                nextRoom = currentRoom.getNorth();
-                break;
-            case "south":
-                nextRoom = currentRoom.getSouth();
-                break;
-            case "east":
-                nextRoom = currentRoom.getEast();
-                break;
-            case "west":
-                nextRoom = currentRoom.getWest();
-                break;
-        }
-
-        if (nextRoom != null) {
-            player.setCurrentRoom(nextRoom); //sets currentRoom as next room (it will be the room we will enter)
-            lookAround(); //output: the rooms description
-        } else {
-            System.out.println("You cannot go this way!");
-        }
-
     }
 
     //method to unlock the door in the direction the player has wished for
     public void unlockLastAttemptedDoor() {
-        if (lastAttemptedDirection != null) {
+        String direction = player.getLastAttemptedDirection();
+        Item item = player.findItem("key"); //looks through players inventory to see if there's a key
+
+        if (direction != null && player.showInventory().contains("key")) { //if direction isn't null and players inventory contains a key
             Room currentRoom = player.getCurrentRoom();
-            currentRoom.unlockDoor(lastAttemptedDirection); //unlocks the door, from the currentroom, in the direction the user has typed
-            System.out.println("The door to the " + lastAttemptedDirection + " is now unlocked!");
-            lastAttemptedDirection = null; //resets the direction user has typed
-        } else {
+            currentRoom.unlockDoor(direction); //unlocks the door, from the currentroom, in the direction the user has typed
+            System.out.println("The door to the " + direction + " is now unlocked!");
+            player.setLastAttemptedDirection(null); //resets the direction user has typed
+            player.removeItem(item);//removes the key after it's been used
+        } else if(!player.showInventory().contains("key")) { //if players inventory doesn't have a key
+            System.out.println("You need a key to open the door! Maybe you can find one in another room?");
+        } else{
             System.out.println("There is no locked door to unlock in that direction");
         }
     }
 
-    public ArrayList<Item> inventory() {
-        return player.getInventoryList();
-    }
-
+//    public ArrayList<Item> inventory() {
+//        return player.getInventoryList();
+//    }
 
 }
 

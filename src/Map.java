@@ -67,12 +67,13 @@ public class Map {
         room1.addItemRoom(new Item("The holy shield", "shield"));
         room2.addItemRoom(new Item("Holy scriptures", "scriptures"));
         room3.addItemRoom(new Item("Enchanting compas", "compas"));
-        room4.addItemRoom(new Item("The old key", "key")); //adds item to room4 ArrayList
+        room7.addItemRoom(new Item("The old key", "key")); //adds item to room4 ArrayList
         room5.addItemRoom(new Item("A mysterious amulet", "amulet"));
         room6.addItemRoom(new Item("The shining gem", "gem"));
-        room7.addItemRoom(new Item("A dusty map", "map"));
+        room4.addItemRoom(new Item("A dusty map", "map"));
         room8.addItemRoom(new Item("An old coin", "coin"));
         room9.addItemRoom(new Item("The glowing torch", "torch"));
+        room9.addItemRoom(new Item("The old key", "key"));
 
 
         //defines the starting room to room 1

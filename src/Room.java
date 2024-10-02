@@ -2,10 +2,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
-//repræsentere et rum i spillet, så der kan dannes flere
 public class Room {
-
-    //div. instansvariabler
     private String name;
     private String description;
     private String shortDescription;
@@ -27,12 +24,12 @@ public class Room {
     }
 
 
-    //metode til at låse døren
+    //method to lock the door
     public void lockDoor(String direction) {
         switch (direction.toLowerCase()) {
             case "north":
                 lockNorth = true;
-                break;//hvis brugere skriver north er døren låst osv.
+                break;//if user types north the door is locked
             case "east":
                 lockEast = true;
                 break;
@@ -45,10 +42,10 @@ public class Room {
         }
     }
 
-    //metode til at låse døren op
+    //method to unlock a door
     public void unlockDoor(String direction) {
         switch (direction.toLowerCase()) {
-            case "north": //hvis brugere skriver north er døren låst op osv.
+            case "north":
                 lockNorth = false;
                 break;
             case "east":
@@ -64,7 +61,7 @@ public class Room {
         }
     }
 
-    //Metode til at finde ud af om døren er låst
+    //Method to check if the door is locked
     public boolean isDoorLocked(String direction) {
         switch (direction.toLowerCase()) {
             case "north": //returns if the lock at e.g. north is true(locked) or false (unlocked)
@@ -80,12 +77,12 @@ public class Room {
         }
     }
 
-    // get metode til at få fat på de forskellige rooms navne
+    // get method to get the rooms name
     public String getName() {
         return name;
     }
 
-    //get metode til at få fat på de forskellige beskrivelser af rummene
+    //get metode to get rooms description
     public String getDescription() {
         if (!visited) { //hvis ikke besøgt gør det nedestående
             visited = true; //rummet er nu besøgt
@@ -95,7 +92,7 @@ public class Room {
         }
     }
 
-    //set & get metode på North
+    //set & get methods
     public Room getNorth() {
         return north;
     }
@@ -104,7 +101,7 @@ public class Room {
         this.north = north;
     }
 
-    //set & get metode på East
+
     public Room getEast() {
         return east;
     }
@@ -113,7 +110,7 @@ public class Room {
         this.east = east;
     }
 
-    //set & get metode på South
+
     public Room getSouth() {
         return south;
     }
@@ -122,7 +119,7 @@ public class Room {
         this.south = south;
     }
 
-    //set & get metode på West
+
     public Room getWest() {
         return west;
     }
