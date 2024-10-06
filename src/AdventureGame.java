@@ -1,9 +1,6 @@
-import java.util.ArrayList;
-
 //Controller
 public class AdventureGame {
     private Player player;
-    // private String lastAttemptedDirection;
 
     //Gamemap generates
     public AdventureGame(Map gameMap) {
@@ -15,14 +12,21 @@ public class AdventureGame {
         player.lookAround();
     }
 
-    //method to move the player in a direction - MOVE TO PLAYER
+    //method to move the player in a direction
     public void movePlayer(String direction) {
         player.movePlayer(direction);
     }
 
-    //metod to get the description of the current room
-    public void gameRoom() {
-        System.out.println(player.getCurrentRoom().getDescription());
+    //method to unlock door
+    public void unlockDoor(){
+        player.unlockLastAttemptedDoor();
+    }
+
+    /*method to get the name and description of the current room, useful when I go back to a room I have visited before,
+    because if I use lookAround the output will be room name + description and below the short description will be printed
+    */
+    public void getName(){
+        System.out.println(player.getName());
     }
 
     //take item method
@@ -40,27 +44,13 @@ public class AdventureGame {
         return player.showInventory();
     }
 
-    //method to unlock the door in the direction the player has wished for
-    public void unlockLastAttemptedDoor() {
-        String direction = player.getLastAttemptedDirection();
-        Item item = player.findItem("key"); //looks through players inventory to see if there's a key
-
-        if (direction != null && player.showInventory().contains("key")) { //if direction isn't null and players inventory contains a key
-            Room currentRoom = player.getCurrentRoom();
-            currentRoom.unlockDoor(direction); //unlocks the door, from the currentroom, in the direction the user has typed
-            System.out.println("The door to the " + direction + " is now unlocked!");
-            player.setLastAttemptedDirection(null); //resets the direction user has typed
-            player.removeItem(item);//removes the key after it's been used
-        } else if(!player.showInventory().contains("key")) { //if players inventory doesn't have a key
-            System.out.println("You need a key to open the door! Maybe you can find one in another room?");
-        } else{
-            System.out.println("There is no locked door to unlock in that direction");
-        }
+    public String showHealth(){
+       return player.showHealth();
     }
 
-//    public ArrayList<Item> inventory() {
-//        return player.getInventoryList();
-//    }
+  public void eatFood(String foodName){
+     player.eatFood(foodName);
+  }
 
 }
 

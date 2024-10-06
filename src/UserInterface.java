@@ -7,7 +7,7 @@ public class UserInterface {
     private AdventureGame adventureGame;
 
     public UserInterface(AdventureGame adventureGame) {
-       this.adventureGame = adventureGame;
+        this.adventureGame = adventureGame;
         scanner = new Scanner(System.in);
     }
 
@@ -88,44 +88,71 @@ public class UserInterface {
                 String userinput = scanner.nextLine().toLowerCase();
 
                 switch (userinput.split(" ")[0]) { //splits the userinput, starts from index 0
-                    case "help" -> {helpCommands(); break;} //help commands shows
-                    case "look" -> {adventureGame.gameRoom(); break;} //Description of the room
-                    case "unlock" ->{
-                        adventureGame.unlockLastAttemptedDoor(); break;} //Unlocks the door in the direction the user has written
-                    case "exit" -> {
+                    case "help" -> {//help commands shows
+                        helpCommands();
+                        break;
+                    }
+                    case "look" -> {//Description of the room
+                        adventureGame.getName();
+                        break;
+                    }
+                    case "unlock" -> {//Unlocks the door in the direction the user has written
+                        adventureGame.unlockDoor();
+                        break;
+                    }
+                    case "exit" -> { //ending game
                         System.out.println("Game ending....");
                         gameIsRunning = false;
                     }
-                    case "take" -> {String itemDescription = userinput.toLowerCase().substring(5);
-                        System.out.println(adventureGame.takeItem(itemDescription));}
-                    case "drop" -> {String itemDescription = userinput.toLowerCase().substring(5);
-                        System.out.println(adventureGame.dropItem(itemDescription));}
+                    case "health" -> { //health point shows
+                        System.out.println(adventureGame.showHealth());
+                    }
+                    case "eat" -> {
+                        String foodName = userinput.toLowerCase().substring(4);
+                        adventureGame.eatFood(foodName);
+                    }
+                    case "take" -> {
+                        String itemDescription = userinput.toLowerCase().substring(5); //userinputs output starts from index 5 (second word)
+                        System.out.println(adventureGame.takeItem(itemDescription));
+                    }
+                    case "drop" -> {
+                        String itemDescription = userinput.toLowerCase().substring(5);
+                        System.out.println(adventureGame.dropItem(itemDescription));
+                    }
                     case "inventory" -> {
                         System.out.println(adventureGame.showInventory());
                     }
-                    case "go" ->{
+                    case "go" -> {
                         String direction = userinput.split(" ", 2)[1]; //splits userinput (2 because it splits in 2, 1 because then it will take the second word user types)
-                        switch (direction){
-                            case "north", "n" -> {System.out.println("Going north!");
+                        switch (direction) {
+                            case "north", "n" -> {
+                                System.out.println("Going north!");
                                 adventureGame.movePlayer("north");
-                                break;}
+                                break;
+                            }
 
-                            case "east", "e" -> {System.out.println("Going east!");
+                            case "east", "e" -> {
+                                System.out.println("Going east!");
                                 adventureGame.movePlayer("east");
-                                break;}
+                                break;
+                            }
 
-                            case "south", "s" -> { System.out.println("Going south!");
+                            case "south", "s" -> {
+                                System.out.println("Going south!");
                                 adventureGame.movePlayer("south");
-                                break;}
+                                break;
+                            }
 
-                            case "west", "w" -> { System.out.println("Going west!");
+                            case "west", "w" -> {
+                                System.out.println("Going west!");
                                 adventureGame.movePlayer("west");
-                                break;}
+                                break;
+                            }
 
                         }
                     }
                     default -> {
-                        System.out.println("Unknow.... Try again!");
+                        System.out.println("Unknown.... Try again!");
                         break;
                     }
                 }

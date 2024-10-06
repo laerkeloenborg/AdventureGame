@@ -1,6 +1,4 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class Room {
     private String name;
@@ -83,12 +81,12 @@ public class Room {
     }
 
     //get metode to get rooms description
-    public String getDescription() {
-        if (!visited) { //hvis ikke besøgt gør det nedestående
-            visited = true; //rummet er nu besøgt
-            return description; //udskriver lang beskrivelse
+    public String getDescriptionIfVisited() {
+        if (!visited) { //If room is not visited before
+            visited = true; //rooms now visited
+            return description; //output: long description
         } else {
-            return shortDescription; //output: short description og the room (a room you have visited before) Udskriver kort beskrivelse når rummet besøges igen
+        return "";
         }
     }
 
@@ -96,7 +94,6 @@ public class Room {
     public Room getNorth() {
         return north;
     }
-
     public void setNorth(Room north) {
         this.north = north;
     }
@@ -105,7 +102,6 @@ public class Room {
     public Room getEast() {
         return east;
     }
-
     public void setEast(Room east) {
         this.east = east;
     }
@@ -114,7 +110,6 @@ public class Room {
     public Room getSouth() {
         return south;
     }
-
     public void setSouth(Room south) {
         this.south = south;
     }
@@ -123,7 +118,6 @@ public class Room {
     public Room getWest() {
         return west;
     }
-
     public void setWest(Room west) {
         this.west = west;
     }
@@ -149,8 +143,9 @@ public class Room {
         return null;
     }
 
+
     //method to list the items in the room
-    public void listArrayRooms() {
+    public String listArrayRooms() {
         if (itemsRooms.isEmpty()) {
             System.out.println("There's no items in this room.");
         } else {
@@ -159,6 +154,6 @@ public class Room {
                 System.out.println("- " + i.getLongName());
             }
         }
-
+return "";
     }
 }
