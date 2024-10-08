@@ -49,6 +49,8 @@ public class UserInterface {
                 "- Type look for the current rooms description \n" +
                 "- Type unlock to unlock a door \n" +
                 "- Type take <item> to pick up an item \n" +
+                "- Type equip <weapon> to equip a weapon \n" +
+                "- Type attack <monster> to attack a monster \n" +
                 "- Type inventory to see your inventory \n" +
                 "- Type drop <item> to drop an item \n" +
                 "- Type help to get access to the help commands\n " +
@@ -93,7 +95,7 @@ public class UserInterface {
                         break;
                     }
                     case "look" -> {//Description of the room
-                        adventureGame.getName();
+                        System.out.println(adventureGame.getName());
                         break;
                     }
                     case "unlock" -> {//Unlocks the door in the direction the user has written
@@ -109,7 +111,15 @@ public class UserInterface {
                     }
                     case "eat" -> {
                         String foodName = userinput.toLowerCase().substring(4);
-                        adventureGame.eatFood(foodName);
+                        System.out.println(adventureGame.eatFood(foodName));
+                    }
+                    case "equip" -> {
+                        String weaponName = userinput.toLowerCase().substring(6);
+                        System.out.println(adventureGame.equipWeapon(weaponName));
+                    }
+                    case "attack" -> {
+                        String monsterName = userinput.toLowerCase().substring(7);
+                        System.out.println(adventureGame.attack(monsterName));
                     }
                     case "take" -> {
                         String itemDescription = userinput.toLowerCase().substring(5); //userinputs output starts from index 5 (second word)

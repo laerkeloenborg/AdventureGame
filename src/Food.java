@@ -12,9 +12,4 @@ public class Food extends Item {
         return healthPoints;
     }
 
-    //method so food is edible
-    public boolean foodEdible() {
-        return true;
-    }
-
 }

@@ -6,6 +6,7 @@ public class Player {
     private String lastAttemptedDirection;
     private ArrayList<Item> inventoryList;//makes an ArrayList, shows which items the player has
     private int health;
+    private Weapon equippedWeapon = null;
 
     //constructor
     public Player(Room startingRoom) {
@@ -19,7 +20,7 @@ public class Player {
         return currentRoom;
     }
 
-    public String getName(){
+    public String getName() {
         return currentRoom.getName();
     }
 
@@ -94,10 +95,10 @@ public class Player {
             currentRoom.unlockDoor(direction); //unlocks the door, from the currentroom, in the direction the user has typed
             System.out.println("The door to the " + direction + " is now unlocked!");
             setLastAttemptedDirection(null); //resets the direction user has typed
-            removeItem(item);//removes the key after it's been used
-        } else if(!showInventory().contains("key")) { //if players inventory doesn't have a key
+            removeItemInventorylist(item);//removes the key after it's been used
+        } else if (!showInventory().contains("key")) { //if players inventory doesn't have a key
             System.out.println("You need a key to open the door! Maybe you can find one in another room?");
-        } else{
+        } else {
             System.out.println("There is no locked door to unlock in that direction");
         }
     }
@@ -108,22 +109,17 @@ public class Player {
     }
 
     //methode to remove an item from the ArrayList
-    public void removeItem(Item item) {
+    public void removeItemInventorylist(Item item) {
         inventoryList.remove(item);
     }
 
-
-    //method to get the Arraylist
-    public ArrayList<Item> getInventoryList() {
-        return inventoryList;
-    }
 
     //method to drop an item in a room
     public String dropItem(String itemToDrop) {
         Item item = findItem(itemToDrop);
 
         if (item != null) {
-            removeItem(item); //remover item from your inventory
+            removeItemInventorylist(item); //remover item from your inventory
             currentRoom.addItemRoom(item); //add'er the item you removed from inventory to the room
             return "You have dropped " + item.getShortName();
         } else {
@@ -149,8 +145,10 @@ public class Player {
     //method to show the inventory
     public String showInventory() {
         String showItems = ""; //an empty String
-        if (inventoryList.isEmpty()) {
-            return ("Your inventory is empty...");
+        if (inventoryList.isEmpty() && getEquippedWeapon() == null) {
+            return "Your inventory is empty and you haven't equipped any weapon...";
+        } else if (inventoryList.isEmpty()) {
+            return "Your inventory is empty... \n Current equipped weapon: " + getEquippedWeapon();
         } else {
             for (Item item : inventoryList) {
                 showItems += (item.getLongName()) + ", "; //finds the item in inventory and adds to the empty string
@@ -158,7 +156,7 @@ public class Player {
             showItems = showItems.substring(0, showItems.length() - 2) + "."; //removes the last comma
             //substring cuts the showItems string, starts from index 0, ends at the Strings length, -2 because then we want get the space and comma
         }
-        return "You have collected: " + showItems;
+        return "You have collected: " + showItems + "\n Current equipped weapon: " + getEquippedWeapon();
     }
 
     //method to find an item in the inventorylist
@@ -171,7 +169,7 @@ public class Player {
         return null;
     }
 
-    public int getHealth(){
+    public int getHealth() {
         return health;
     }
 
@@ -204,51 +202,102 @@ public class Player {
         }
     }
 
-    //FIKS SÅ MAN IKKE KAN FÅ MERE END 100 I HEALTH
-    public void eatFood(String foodName) {
-            Item item = findItem(foodName); //find item in players inventory
+    public String eatFood(String foodName) {
+        Item item = findItem(foodName); //find item (food) in players inventory
 
-            if (item == null) {
-                item = currentRoom.searchItem(foodName); //if the item isn't in players inventory, we look in the currentroom
-            }
+        if (item == null) {
+            item = currentRoom.searchItem(foodName); //if the item isn't in players inventory, we look in the currentroom
+        }
 
-            if (item == null) { //if the item isn't to be found in current room
-                System.out.println("There's no " + foodName + " here.");
-                return; //stops the method
-            }
+        if (item == null) { //if the item isn't to be found in current room
+            return "There's no " + foodName + " here."; //returns output and stop the method
+        }
 
-        if(getHealth() >= 100) { //if health is 100 or over you cannot eat more food which ha positive healthpoints
+        if (getHealth() >= 100) { //if health is 100 or over you cannot eat more food which ha positive healthpoints
             if (item instanceof Food) {
                 Food food = (Food) item; //explicit down cast /typecasting
                 int foodHealth = food.getHealthPoints();
                 if (foodHealth > 0) { //if food health points is positive (over 0)
-                    System.out.println("Your health is already full");
-                    return; //stops the method
+                    return "Your health is already full";
                 }
             }
         }
 
-            //we have to check if the item is food or a thing
-            if (item instanceof Food) { //checks if the item is a food
-                Food food = (Food) item; //typecaster item to food, so I can get specific methods which is located in our Food class
-                int foodValue = food.getHealthPoints();
+        //we have to check if the item is food or a thing
+        if (item instanceof Food) { //checks if the item is a food
+            Food food = (Food) item; //typecaster item to food, so I can get specific methods which is located in our Food class
+            int foodValue = food.getHealthPoints();
 
-                if(foodValue > 0){
-                    increaseHealth(foodValue); //increase players health
-                    System.out.println("Good choice by eating " + foodName + ", your health is now up at " + getHealth() + "." );
-                } else{
-                    decreaseHealth(foodValue);
-                    System.out.println("Oh no... After eating " + foodName + ", your health is now down at " + getHealth() + ".");
-                }
+            if (foodValue > 0) {
+                increaseHealth(foodValue); //increase players health
+                String result = "Good choice by eating " + foodName + ", your health is now up at " + getHealth() + ".";
 
                 //removes the food from current room or players inventory
                 if (inventoryList.contains(item)) {
-                    removeItem(item); //removes from inventory
+                    removeItemInventorylist(item); //removes from inventory
                 } else {
                     currentRoom.removeItem(item); //removes from current room
                 }
+                return result;
             } else {
-                System.out.println("You cannot eat " + foodName + "!");
+                decreaseHealth(foodValue);
+                String result = "Oh no... After eating " + foodName + ", your health is now down at " + getHealth() + ".";
+
+                //removes the food from current room or players inventory
+                if (inventoryList.contains(item)) {
+                    removeItemInventorylist(item); //removes from inventory
+                } else {
+                    currentRoom.removeItem(item); //removes from current room
+                }
+                return result;
             }
+
+        } else {
+            return "You cannot eat " + foodName + "!";
         }
+    }
+
+    //get current equipped weapon
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public String equipWeapon(String weaponName) {
+        Item item = findItem(weaponName); //finds item (weapon) in players inventory
+
+        if (item == null) {
+            return "You don't have a " + weaponName + " in your inventory."; //return this output and stop the method
+        } else if (!(item instanceof Weapon)) { //checks if the item is a weapon
+            return "This item is not a weapon.";
+        } else {
+            Weapon newWeapon = (Weapon) item; // typecasting, down cast item object, so I can get the methods from Weapon class
+
+            //if we already equipped a weapon, we need to put it back in inventory when we want to equip a new weapon.
+            //then we can use the weapon again at another time else it will be lost...
+            if (equippedWeapon != null) {
+                inventoryList.add(equippedWeapon); //add current equippedweapon to inventory
+                String previousWeaponName = equippedWeapon.getShortName();
+                equippedWeapon = newWeapon;
+                inventoryList.remove(newWeapon); // removes new equipped weapon from inventory
+                return previousWeaponName + " is now in your inventory.\nYou have equipped " + newWeapon.getShortName() + ".";
+            }
+
+            // If there isn't an equipped weapon already.
+            equippedWeapon = newWeapon;
+            inventoryList.remove(newWeapon); // removes equipped from inventory
+            return "You have equipped " + newWeapon.getShortName() + ".";
+        }
+    }
+
+    public String attack(String monsterName) {
+        Weapon weapon = getEquippedWeapon();
+
+        if (weapon == null) { //if equipped weapon is null
+            return "You don't have any equipped weapon.";
+        } else if (!weapon.canUse()) { //if weapon can't be used
+            return "Your weapon needs more ammunition!";
+        } else {
+            return weapon.use(); //uses the weapon
+        }
+    }
 }

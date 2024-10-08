@@ -25,8 +25,8 @@ public class AdventureGame {
     /*method to get the name and description of the current room, useful when I go back to a room I have visited before,
     because if I use lookAround the output will be room name + description and below the short description will be printed
     */
-    public void getName(){
-        System.out.println(player.getName());
+    public String getName(){
+        return player.getName();
     }
 
     //take item method
@@ -48,8 +48,16 @@ public class AdventureGame {
        return player.showHealth();
     }
 
-  public void eatFood(String foodName){
-     player.eatFood(foodName);
+  public String eatFood(String foodName){
+    return player.eatFood(foodName);
+  }
+
+  public String equipWeapon (String weaponName){
+       return player.equipWeapon(weaponName);
+  }
+
+  public String attack (String monsterName){
+        return player.attack(monsterName);
   }
 
 }

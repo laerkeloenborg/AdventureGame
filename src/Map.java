@@ -84,10 +84,19 @@ public class Map {
         room4.addItemRoom(new Food("An apple", "apple", 10));
         room6.addItemRoom(new Food("Healing tempel fruit", "fruit", 30));
         room6.addItemRoom(new Food("Mushroom soup", "soup", -15));
-        room7.addItemRoom(new Food("Unidentified fruit", "fruit", -10));
+        room7.addItemRoom(new Food("Unidentified mushroom", "mushroom", -10));
         room8.addItemRoom(new Food("Glowig pie", "pie", 15));
         room9.addItemRoom(new Food("Templar crackers", "crackers", -5));
         room9.addItemRoom(new Food("Monster meat", "meat", -25));
+
+        //add weapons
+        room1.addItemRoom(new MeleeWeapon("Ancient dagger", "dagger", -9));
+        room2.addItemRoom(new RangedWeapon("A magical crossbow", "crossbow", -20, 3));
+        room3.addItemRoom(new MeleeWeapon("A tempel sword", "sword", -15));
+        room4.addItemRoom(new MeleeWeapon("A guards axe", "axe", -17));
+        room6.addItemRoom(new MeleeWeapon("Obsidian blade", "blade", -5));
+        room8.addItemRoom(new RangedWeapon("Mystic slingshot", "slingshot", -10, 3));
+        room9.addItemRoom(new RangedWeapon("Old bow", "bow", -15,5));
 
 
         //defines the starting room to room 1
