@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
-//vores single responsibility principle
-// håndtere alt input og output
+//single responsibility principle
+// handle input & output
 public class UserInterface {
     private Scanner scanner;
     private AdventureGame adventureGame;
@@ -99,7 +99,7 @@ public class UserInterface {
                         break;
                     }
                     case "unlock" -> {//Unlocks the door in the direction the user has written
-                        adventureGame.unlockDoor();
+                        System.out.println(adventureGame.unlockDoor());
                         break;
                     }
                     case "exit" -> { //ending game
@@ -118,8 +118,8 @@ public class UserInterface {
                         System.out.println(adventureGame.equipWeapon(weaponName));
                     }
                     case "attack" -> {
-                        String monsterName = userinput.toLowerCase().substring(7);
-                        System.out.println(adventureGame.attack(monsterName));
+                        String enemyName = userinput.toLowerCase().substring(7);
+                        System.out.println(adventureGame.attackEnemy(enemyName));
                     }
                     case "take" -> {
                         String itemDescription = userinput.toLowerCase().substring(5); //userinputs output starts from index 5 (second word)

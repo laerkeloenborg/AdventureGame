@@ -12,7 +12,7 @@ public class Player {
     public Player(Room startingRoom) {
         currentRoom = startingRoom;
         inventoryList = new ArrayList<Item>();
-        health = 100;
+        health = 100; //sets player health to 100 from the start
     }
 
     //get method to get the current room the player is in
@@ -20,14 +20,16 @@ public class Player {
         return currentRoom;
     }
 
-    public String getName() {
-        return currentRoom.getName();
-    }
-
     //set method to set currentRoom
     public void setCurrentRoom(Room newRoom) {
         this.currentRoom = newRoom;
     }
+
+    //getter method to get name of current room
+    public String getName() {
+        return currentRoom.getName();
+    }
+
 
     // Getter for lastAttemptedDirection
     public String getLastAttemptedDirection() {
@@ -46,7 +48,9 @@ public class Player {
         String roomDescription = getCurrentRoom().getDescriptionIfVisited();
         System.out.println(roomDescription);//output: the rooms description (whether it should be short or long)
 
-        getCurrentRoom().listArrayRooms(); //output: rooms items
+        getCurrentRoom().printListOfItemsRoom(); //output: rooms items
+        System.out.println();
+        getCurrentRoom().printListOfEnemiesRoom(); //output: enemies
     }
 
     //method to move player from room to room
@@ -86,20 +90,20 @@ public class Player {
 
 
     //method to unlock the door in the direction the player has wished for
-    public void unlockLastAttemptedDoor() {
+    public String unlockDoor() {
         String direction = getLastAttemptedDirection();
         Item item = findItem("key"); //looks through players inventory to see if there's a key
 
         if (direction != null && showInventory().contains("key")) { //if direction isn't null and players inventory contains a key
             Room currentRoom = getCurrentRoom();
             currentRoom.unlockDoor(direction); //unlocks the door, from the currentroom, in the direction the user has typed
-            System.out.println("The door to the " + direction + " is now unlocked!");
             setLastAttemptedDirection(null); //resets the direction user has typed
             removeItemInventorylist(item);//removes the key after it's been used
+            return "The door to the " + direction + " is now unlocked!";
         } else if (!showInventory().contains("key")) { //if players inventory doesn't have a key
-            System.out.println("You need a key to open the door! Maybe you can find one in another room?");
+            return "You need a key to open the door! Maybe you can find one in another room?";
         } else {
-            System.out.println("There is no locked door to unlock in that direction");
+            return "There is no locked door to unlock in that direction";
         }
     }
 
@@ -188,12 +192,12 @@ public class Player {
         return "";
     }
 
-    //method so health can be more tha 100
+    //method so health can not be more tha 100
     public void increaseHealth(int amount) {
         health = Math.min(health + amount, 100); //Ensure max health is 100
     }
 
-    //method so health can be under 0
+    //method so health can not be under 0
     public void decreaseHealth(int amount) {
         health = Math.max(health + amount, 0); //Ensure min health is 0
         if (health <= 0) {
@@ -289,15 +293,40 @@ public class Player {
         }
     }
 
-    public String attack(String monsterName) {
+    public String attackEnemy(String enemyName) {
         Weapon weapon = getEquippedWeapon();
 
-        if (weapon == null) { //if equipped weapon is null
-            return "You don't have any equipped weapon.";
-        } else if (!weapon.canUse()) { //if weapon can't be used
+        Enemy enemy = currentRoom.searchEnemies(enemyName); //search after the enemy in room
+
+
+        if (getHealth() < 15) { //if players health is below 15
+            return "Your health is too low to fight... Go find some food.";
+        }
+
+        if (currentRoom.getEnemiesInRoom().isEmpty()) {
+            return "Your fighting the air. There's no enemies in here.";
+        }else if (weapon == null) { //if player haven't equipped a weapon
+            return "You don't have any equipped weapon to use.";
+        } else if (!weapon.canUse()) { //if weapon can not be used bc lack of ammo
             return "Your weapon needs more ammunition!";
         } else {
-            return weapon.use(); //uses the weapon
+            getEquippedWeapon().use(); //player use equipped weapon
+            int playersWeaponDamage = getEquippedWeapon().getDamage(); //damage from players weapon
+
+            int enermyHealth = enemy.hitByPlayer(playersWeaponDamage);//enemy's health reduced by that damage from players weapon
+            enemy.attackPlayer(this); //enemy attacks player
+
+            String enemyHealthMessage = "You have damaged the " + enemy.getLongName() + " with your " + getEquippedWeapon() + ".\n" + enemy.getLongName() + "'s health: " + enermyHealth + ".\n";
+            String playerHealthMessage = "You've been attacked by " + enemy.getLongName() + " with " + enemy.getWeapon() + ".\nYour health: " + getHealth() + ".";
+            Weapon enemyWeapon = enemy.getWeapon(); //gets the weapon the enemy has
+
+            if (enemy.getHealth() == 0) {
+                getCurrentRoom().removeEnemy(enemy); //removes enemy from room
+                getCurrentRoom().addItemRoom(enemyWeapon); //add weapon to current room
+                return "You have defeated the " + enemy.getLongName() + ", " + enemyWeapon + " has been dropped into the room.";
+            } else {
+                return enemyHealthMessage + playerHealthMessage;
+            }
         }
     }
 }

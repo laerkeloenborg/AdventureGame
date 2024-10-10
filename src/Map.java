@@ -30,7 +30,6 @@ public class Map {
                 "Here, the corridors are narrow, and the darkness is thick. \n" + "Many explorers have been lost here. Dangerous traps are hidden in every corner. \n" + "To get out of this darkness, you can choose between going west or north.", "You're now in: The Temple's Dark Labyrinth.");
 
         //combines the rooms
-
         room1.setEast(room2); //sets the room east for room 1 to room 2
         room1.setSouth(room4);
 
@@ -61,7 +60,7 @@ public class Map {
         //locks door in a specific direction
         room1.lockDoor("east"); //e.g. lock the door east for room 1 (entrance to room 2)
         room6.lockDoor("south");
-        room8.lockDoor("north"); //LAV SÅ DET ER EN SPECIFIC KODE ELLER NØGLE MAN SKAL HAVE FOR AT KOMME IND
+        room8.lockDoor("north");
 
 
         //Add room items
@@ -71,6 +70,7 @@ public class Map {
         room7.addItemRoom(new Item("The old key", "key")); //adds item to room4 ArrayList
         room5.addItemRoom(new Item("A mysterious amulet", "amulet"));
         room6.addItemRoom(new Item("The shining gem", "gem"));
+        room6.addItemRoom(new Item("The old key", "key"));
         room4.addItemRoom(new Item("A dusty map", "map"));
         room8.addItemRoom(new Item("An old coin", "coin"));
         room9.addItemRoom(new Item("The glowing torch", "torch"));
@@ -90,14 +90,19 @@ public class Map {
         room9.addItemRoom(new Food("Monster meat", "meat", -25));
 
         //add weapons
-        room1.addItemRoom(new MeleeWeapon("Ancient dagger", "dagger", -9));
-        room2.addItemRoom(new RangedWeapon("A magical crossbow", "crossbow", -20, 3));
-        room3.addItemRoom(new MeleeWeapon("A tempel sword", "sword", -15));
+        room1.addItemRoom(new MeleeWeapon("Ancient dagger", "dagger", -15));
+        room2.addItemRoom(new RangedWeapon("A magical crossbow", "crossbow", -30, 3));
+        room3.addItemRoom(new MeleeWeapon("A tempel sword", "sword", -20));
         room4.addItemRoom(new MeleeWeapon("A guards axe", "axe", -17));
         room6.addItemRoom(new MeleeWeapon("Obsidian blade", "blade", -5));
         room8.addItemRoom(new RangedWeapon("Mystic slingshot", "slingshot", -10, 3));
-        room9.addItemRoom(new RangedWeapon("Old bow", "bow", -15,5));
+        room9.addItemRoom(new RangedWeapon("Old bow", "bow", -25,5));
 
+        //add enemy
+        room3.addEnemy(new Enemy("Cursed priest", "priest", 50, new MeleeWeapon("soulbinding cross", "cross", -10)));
+        room5.addEnemy(new Enemy("The fallen king", "king", 100, new MeleeWeapon("blazing sword", "sword", -35)));
+        room9.addEnemy(new Enemy("Shadow scorpions", "scorpions", 40,new MeleeWeapon("poisonous tail", "tail", -8)));
+        room7.addEnemy(new Enemy("Ghost temple guard", "guard", 80, new MeleeWeapon("Stone hammer", "hammer", -15)));
 
         //defines the starting room to room 1
         startingRoom = room1;

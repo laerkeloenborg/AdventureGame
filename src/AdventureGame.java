@@ -18,14 +18,14 @@ public class AdventureGame {
     }
 
     //method to unlock door
-    public void unlockDoor(){
-        player.unlockLastAttemptedDoor();
+    public String unlockDoor() {
+        return player.unlockDoor();
     }
 
     /*method to get the name and description of the current room, useful when I go back to a room I have visited before,
     because if I use lookAround the output will be room name + description and below the short description will be printed
     */
-    public String getName(){
+    public String getName() {
         return player.getName();
     }
 
@@ -44,21 +44,25 @@ public class AdventureGame {
         return player.showInventory();
     }
 
-    public String showHealth(){
-       return player.showHealth();
+    //show players health
+    public String showHealth() {
+        return player.showHealth();
     }
 
-  public String eatFood(String foodName){
-    return player.eatFood(foodName);
-  }
+    //method to eat food
+    public String eatFood(String foodName) {
+        return player.eatFood(foodName);
+    }
 
-  public String equipWeapon (String weaponName){
-       return player.equipWeapon(weaponName);
-  }
+    //method to equip weapon
+    public String equipWeapon(String weaponName) {
+        return player.equipWeapon(weaponName);
+    }
 
-  public String attack (String monsterName){
-        return player.attack(monsterName);
-  }
+    //method to attack enemy
+    public String attackEnemy(String enemyName) {
+        return player.attackEnemy(enemyName);
+    }
 
 }
 

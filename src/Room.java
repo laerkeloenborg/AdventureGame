@@ -8,17 +8,18 @@ public class Room {
     private boolean lockNorth, lockEast, lockSouth, lockWest; //lås for nord osv.
     private boolean visited;
     private ArrayList<Item> itemsRooms = new ArrayList<Item>();    //makes an ArrayList, shows which items there is in the rooms
+    private ArrayList<Enemy> enemiesInRoom = new ArrayList<Enemy>();
 
     //constructor
     public Room(String name, String description, String shortDescription) {
         this.name = name;
         this.description = description;
         this.shortDescription = shortDescription;
-        this.lockNorth = false; //standarden er at dørene ikke er låste
+        this.lockNorth = false; //Standard is that door is unlocked
         this.lockEast = false;
         this.lockSouth = false;
         this.lockWest = false;
-        this.visited = false; //standarden er at ingen af rummene er besøgt inden det går igang
+        this.visited = false; //Standard is that no room has been visited
     }
 
 
@@ -86,7 +87,7 @@ public class Room {
             visited = true; //rooms now visited
             return description; //output: long description
         } else {
-        return "";
+            return "";
         }
     }
 
@@ -94,6 +95,7 @@ public class Room {
     public Room getNorth() {
         return north;
     }
+
     public void setNorth(Room north) {
         this.north = north;
     }
@@ -102,6 +104,7 @@ public class Room {
     public Room getEast() {
         return east;
     }
+
     public void setEast(Room east) {
         this.east = east;
     }
@@ -110,6 +113,7 @@ public class Room {
     public Room getSouth() {
         return south;
     }
+
     public void setSouth(Room south) {
         this.south = south;
     }
@@ -118,6 +122,7 @@ public class Room {
     public Room getWest() {
         return west;
     }
+
     public void setWest(Room west) {
         this.west = west;
     }
@@ -145,7 +150,7 @@ public class Room {
 
 
     //method to list the items in the room
-    public String listArrayRooms() {
+    public String printListOfItemsRoom() {
         if (itemsRooms.isEmpty()) {
             System.out.println("There's no items in this room.");
         } else {
@@ -154,6 +159,50 @@ public class Room {
                 System.out.println("- " + i.getLongName());
             }
         }
-return "";
+        return "";
     }
+
+    //method to get the list of enemies
+    public ArrayList<Enemy> getEnemiesInRoom() {
+        return enemiesInRoom;
+    }
+
+    //add enemy in room
+    public void addEnemy(Enemy enemy) {
+        enemiesInRoom.add(enemy);
+    }
+
+    //remove enemy from room
+    public void removeEnemy(Enemy enemy) {
+        enemiesInRoom.remove(enemy);
+    }
+
+    //method to search after an enemy
+    public Enemy searchEnemies(String enemyDescription) {
+        for (Enemy enemy : enemiesInRoom) { //looks through the arrayList enemiesInRoom for the enemy
+            if (enemy.getShortName().equalsIgnoreCase(enemyDescription)) { //if the enemy is in the arrayList
+                return enemy; //return enemy
+            }
+        }
+        return null; //returns null if enemy isn't there
+    }
+
+    //method to print list of enemies
+    public String printListOfEnemiesRoom() {
+        String enemies = "";
+        int i = 0;
+
+        if (enemiesInRoom.isEmpty()) {
+            return "Dont worry, there is no enemies in here...";
+        } else {
+            System.out.println("ENEMY ALERT -- Enemies in here: ");
+            for (Enemy enemy : enemiesInRoom) {
+                enemies += enemiesInRoom.get(i).getLongName();
+                System.out.println("- " + enemy.getLongName());
+            }
+
+            return "";
+        }
+    }
+
 }
